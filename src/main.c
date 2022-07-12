@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <threads.h>
+#include <signal.h>
 #include <string.h>
 #include "logger.h"
 #include "reader_thread.h"
@@ -12,6 +13,11 @@
 
 extern logger_function* logger;
 
+State state = {0};
+
+void term_handler(int signum) {
+  state.finished = 1;
+}
 
 int main(int argc, char* argv[argc + 1]) {
   FILE* stat = fopen("/proc/stat", "r");
@@ -28,9 +34,13 @@ int main(int argc, char* argv[argc + 1]) {
     logger = no_log;
   }
 
+  struct sigaction action;
+  memset(&action, 0, sizeof(struct sigaction));
+  action.sa_handler = term_handler;
+  sigaction(SIGTERM, &action, NULL);
+
   size_t proc_no = get_proc_no(stat);
   logger("Detected number of processors: %zu \n", proc_no);
-  State state = {0};
   state_init(&state, proc_no, stat);
   logger("State initialized.\n");
   thrd_t thrd[3];
@@ -46,6 +56,7 @@ int main(int argc, char* argv[argc + 1]) {
 
   state_delete(&state);
   fclose(stat);
+  logger("Program finished, closing log file...\n");
   file_log_close();
 
   return EXIT_SUCCESS;
