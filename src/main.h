@@ -14,6 +14,4 @@ struct State {
     size_t proc_no;
 };
 
-
-
 #endif

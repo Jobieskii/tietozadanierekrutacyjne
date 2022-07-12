@@ -41,7 +41,6 @@ void state_init(State* s, size_t proc_no, FILE* stat) {
 }
 
 
-
 int main(int argc, char* argv[argc + 1]) {
   FILE* stat = fopen("/proc/stat", "r");
   if (!stat) {
@@ -49,7 +48,10 @@ int main(int argc, char* argv[argc + 1]) {
     return EXIT_FAILURE;
   }
   if (argc > 1 && !strncmp(argv[1], "-V", 2)) {
-    logger = printf;
+    FILE* f = file_log_init(argv[0]);
+    if (f) {
+      logger = file_log;
+    }
   } else {
     logger = no_log;
   }
@@ -75,6 +77,7 @@ int main(int argc, char* argv[argc + 1]) {
     delete_proc_stats(state.proc_stats[i]);
   }
   fclose(stat);
+  file_log_close();
 
   return EXIT_SUCCESS;
 }
