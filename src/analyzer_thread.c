@@ -3,6 +3,7 @@
 #include "logger.h"
 #include "raw_struct.h"
 #include "state_struct.h"
+#include "analyzer_thread.h"
 
 extern logger_function* logger;
 /*

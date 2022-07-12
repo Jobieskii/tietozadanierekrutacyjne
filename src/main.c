@@ -35,10 +35,7 @@ int main(int argc, char* argv[argc + 1]) {
         logger = no_log;
     }
 
-    struct sigaction action;
-    memset(&action, 0, sizeof(struct sigaction));
-    action.sa_handler = term_handler;
-    sigaction(SIGTERM, &action, NULL);
+    signal(SIGTERM, term_handler);
 
     size_t proc_no = get_proc_no(stat);
     logger("Detected number of processors: %zu \n", proc_no);
@@ -62,4 +59,3 @@ int main(int argc, char* argv[argc + 1]) {
 
     return EXIT_SUCCESS;
 }
-

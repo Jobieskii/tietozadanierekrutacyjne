@@ -9,7 +9,7 @@ extern logger_function* logger;
 
 char* get_line_suffix(size_t size, char s[size], FILE* stream) {
     s[0] = '\0';
-    char* ret = fgets(s, size, stream);
+    char* ret = fgets(s, (int) size, stream);
     if (ret) {
         // check that line starts with 'cpu(n)'.
         if (strlen(s) > 3 && strncmp(s, "cpu", 3)) return 0;

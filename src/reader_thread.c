@@ -39,4 +39,3 @@ int reader_thread(void* arg) {
     }
     return 0;
 }
-
