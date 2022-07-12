@@ -2,10 +2,9 @@
 #include "logger.h"
 #include "main.h"
 
-
 logger_function* logger;
 
-int no_log(char const* _, ...) {
+int no_log(char const* UNUSED(format), ...) {
     return 0;
 }
 

@@ -14,22 +14,24 @@ void print_usage(size_t proc_no, double arr[proc_no + 1]) {
 
 
 int print_thread(void* arg) {
-  State* state = arg;
-  size_t i = 0;
-  logger("Printer thread started.\n");
-  puts("\e[1;1H\e[2J");
-  while(!state->finished) {
-    logger("Printer trying (%d)\n", i);
-    mtx_lock(&state->proc_stats[i]->mtx);
-    logger("Printer thread locked (%d).\n", i);
-    print_usage(state->proc_no, state->proc_stats[i]->processed_arr);
-    
-    thrd_sleep(&(struct timespec){.tv_sec=1}, 0);
-    mtx_unlock(&state->proc_stats[i]->mtx);
-    logger("Printer thread unlocked (%d).\n", i);
-    ++i;
-    i %= 2;
-  }
+    State* state = arg;
+    size_t i = 0;
+    logger("Printer thread started.\n");
+    puts("\e[1;1H\e[2J");
+    while(!state->finished) {
+        logger("Printer trying (%d)\n", i);
+        mtx_lock(&state->proc_stats[i]->mtx);
+        logger("Printer thread locked (%d).\n", i);
+        print_usage(state->proc_no, state->proc_stats[i]->processed_arr);
 
-  return 0;
+        thrd_sleep(&(struct timespec) {
+            .tv_sec=1
+        }, 0);
+        mtx_unlock(&state->proc_stats[i]->mtx);
+        logger("Printer thread unlocked (%d).\n", i);
+        ++i;
+        i %= 2;
+    }
+
+    return 0;
 }
