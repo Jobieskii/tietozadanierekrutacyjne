@@ -3,7 +3,7 @@
 
 extern logger_function* logger;
 
-proc_stats* create_proc_stats(size_t n, mtx_t new_mtx) {
+proc_stats* proc_stats_create(size_t n, mtx_t new_mtx) {
   proc_stats* s = malloc (sizeof(mtx_t) + sizeof(size_t) + sizeof(double[n + 1]));
   if (s) {
     mtx_init(&new_mtx, mtx_plain);
@@ -15,7 +15,7 @@ proc_stats* create_proc_stats(size_t n, mtx_t new_mtx) {
   }
   return s;
 }
-void delete_proc_stats(proc_stats* r) {
+void proc_stats_delete(proc_stats* r) {
   mtx_destroy(&r->mtx);
   free(r);
 }

@@ -1,6 +1,8 @@
 #include <stdlib.h>
-#include "main.h"
+#include <string.h>
 #include "logger.h"
+#include "raw_struct.h"
+#include "state_struct.h"
 
 extern logger_function* logger;
 /*

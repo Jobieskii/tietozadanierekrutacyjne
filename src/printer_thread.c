@@ -1,5 +1,5 @@
 #include <unistd.h>
-#include "main.h"
+#include "state_struct.h"
 #include "logger.h"
 
 extern logger_function* logger;

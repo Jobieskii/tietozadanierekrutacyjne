@@ -3,7 +3,7 @@
 
 extern logger_function* logger;
 
-raw_stats* create_raw_stats(size_t n, mtx_t new_mtx) {
+raw_stats* raw_stats_create(size_t n, mtx_t new_mtx) {
   size_t size = sizeof(mtx_t) + 
                 sizeof(size_t) + 
                 sizeof(size_t) +
@@ -20,7 +20,7 @@ raw_stats* create_raw_stats(size_t n, mtx_t new_mtx) {
   }
   return s;
 }
-void delete_raw_stats(raw_stats* r) {
+void raw_stats_delete(raw_stats* r) {
   mtx_destroy(&r->mtx);
   free(r);
 }

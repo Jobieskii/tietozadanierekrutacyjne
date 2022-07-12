@@ -1,5 +1,9 @@
-#include "file_thread.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "file_func.h"
 #include "raw_struct.h"
+#include "logger.h"
 
 extern logger_function* logger;
 
@@ -40,34 +44,9 @@ void fill_from_line(unsigned long long numbers[stat_count_],
   }
 }
 
-void fill_from_raw(FILE* stat, size_t proc_no,
-                  unsigned long long stat_raw[proc_no + 1][stat_count_]) {
+size_t get_proc_no(FILE* stream) {
   char buf[256];
-  for (size_t n = 0; n < proc_no + 1; ++n) {
-    char* nbuf = get_line_suffix(sizeof buf, buf, stat);
-    if (nbuf) {
-      fill_from_line(stat_raw[n], nbuf, 10);
-    }
-  }
-  return;
+  size_t n = 0;
+  while (get_line_suffix(256, buf, stream)) ++n;
+  return n - 1;
 }
-
-int file_thread(void* arg) {
-  State* state = arg;
-  size_t i = 0;
-  logger("Reading thread started.\n");
-  while(!state->finished) {
-    logger("Reading trying (%d)\n", i);
-    mtx_lock(&state->raw_stats[i]->mtx);
-    logger("Reading thread locked (%d).\n", i);
-    freopen("/proc/stat", "r", state->stat);
-    fill_from_raw(state->stat, state->proc_no, state->raw_stats[i]->raw_arr);
-
-    mtx_unlock(&state->raw_stats[i]->mtx);
-    logger("Reading thread unlocked (%d).\n", i);
-    ++i;
-    i %= 2;
-  }
-  return 0;
-}
-

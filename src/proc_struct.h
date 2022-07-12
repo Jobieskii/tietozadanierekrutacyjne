@@ -11,8 +11,8 @@ struct processed_stats {
   double processed_arr[];
 };
 
-proc_stats* create_proc_stats(size_t n, mtx_t new_mtx);
+proc_stats* proc_stats_create(size_t n, mtx_t new_mtx);
 
-void delete_proc_stats(proc_stats* r);
+void proc_stats_delete(proc_stats* r);
 
 #endif
