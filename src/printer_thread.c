@@ -5,6 +5,7 @@
 extern logger_function* logger;
 
 void print_usage(size_t proc_no, double arr[proc_no + 1]) {
+    puts("\e[1;1H\e[2J");
     printf("total CPU usage: %.2f%%\n", arr[0] * 100.0);
     for (size_t i = 1; i < proc_no + 1; ++i) {
         printf("CPU%zu usage: %.2f%%\n", i - 1, arr[i] * 100.0);

@@ -57,7 +57,7 @@ int main(int argc, char* argv[argc + 1]) {
   }
 
   size_t proc_no = get_proc_no(stat);
-  logger("Detected number of processors: %zu \n\n", proc_no);
+  logger("Detected number of processors: %zu \n", proc_no);
   State state = {0};
   state_init(&state, proc_no, stat);
   logger("State initialized.\n");
