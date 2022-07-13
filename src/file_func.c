@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "file_func.h"
 #include "raw_struct.h"
-#include "logger.h"
-
-extern logger_function* logger;
 
 char* get_line_suffix(size_t size, char s[size], FILE* stream) {
     s[0] = '\0';
@@ -32,12 +28,10 @@ char* get_line_suffix(size_t size, char s[size], FILE* stream) {
 void fill_from_line(unsigned long long numbers[stat_count_],
                     char const* s,
                     int base) {
-    char const* const t = s;
     char* next = 0;
     for (size_t i = 0; i < stat_count_; ++i) {
         numbers[i] = strtoull(s, &next, base);
         if (s == next || !s[0]) {
-            logger("line from /proc/stat not fully read. (%s)\n", t);
             break;
         }
         s = next;
