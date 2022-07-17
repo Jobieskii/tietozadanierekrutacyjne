@@ -1,5 +1,5 @@
-CC := gcc
-CFLAGS := --std=c11 -Wall -Wextra -Wno-missing-braces
+CC := clang 
+CFLAGS := --std=c11 -Wall -Wextra -Wno-missing-braces -lpthread
 
 BUILD_DIR := ./build
 SRC_DIR := ./src
